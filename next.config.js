@@ -2,8 +2,14 @@
 const nextConfig = {
   images: {
     unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
-  output: 'standalone',
+  // Remove the output: 'standalone' or output: 'export'
 }
 
 module.exports = nextConfig

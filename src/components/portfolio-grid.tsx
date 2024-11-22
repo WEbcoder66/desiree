@@ -4,6 +4,16 @@ import React, { useState, useMemo } from 'react';
 import { Lock, Play, Volume2, VolumeX, X } from 'lucide-react';
 import Image from 'next/image';
 
+interface Profile {
+  name: string;
+  location: string;
+  bio: string;
+  stats: {
+    posts: number;
+    followers: string;
+  }
+}
+
 const PortfolioGrid = () => {
   const [playingVideo, setPlayingVideo] = useState<number | null>(null);
   const [isMuted, setIsMuted] = useState(true);
@@ -14,14 +24,13 @@ const PortfolioGrid = () => {
     isOpen: boolean;
   }>({ type: 'photo', src: '', isOpen: false });
 
-  const profile = {
+  const profile: Profile = {
     name: "Desiree Black♡",            
     location: "In Your Mind & In Your Bed",          
     bio: "👑Ts Romanian Princess👑",  
     stats: {
       posts: 19,               
       followers: "30.5K",           
-                       
     }           
   };
 
@@ -190,7 +199,6 @@ const PortfolioGrid = () => {
   };
 
   const openModal = (type: 'photo' | 'video', src: string) => {
-    // Stop the grid video when opening modal
     if (type === 'video') {
       setPlayingVideo(null);
     }
@@ -201,6 +209,11 @@ const PortfolioGrid = () => {
   const closeModal = () => {
     setModalContent({ ...modalContent, isOpen: false });
     document.body.style.overflow = 'unset';
+  };
+
+  const handlePlayClick = (id: number) => {
+    setPlayingVideo(id);
+    setIsMuted(false);
   };
 
   return (
@@ -233,10 +246,6 @@ const PortfolioGrid = () => {
           <div className="flex items-center gap-1">
             <span className="text-gray-400">{profile.stats.followers}</span>
             <span className="text-gray-400">followers</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <span className="text-gray-400">{profile.stats.media}</span>
-            <span className="text-gray-400"></span>
           </div>
         </div>
 
@@ -335,11 +344,11 @@ const PortfolioGrid = () => {
                                  33vw"
                           className="object-cover cursor-pointer"
                           priority={item.id <= 9}
-                          onClick={() => setPlayingVideo(item.id)}
+                          onClick={() => handlePlayClick(item.id)}
                         />
                         <div 
                           className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/40 transition-colors cursor-pointer"
-                          onClick={() => setPlayingVideo(item.id)}
+                          onClick={() => handlePlayClick(item.id)}
                         >
                           <div className="w-12 h-12 flex items-center justify-center rounded-full bg-white/25 group-hover:bg-white/30 transition-colors">
                             <Play className="w-6 h-6 text-white" />
@@ -418,13 +427,7 @@ const PortfolioGrid = () => {
               />
             ) : (
               <div 
-                className="relative max-w-full max-h-[90vh] w-auto h-auto"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <img
-                  src={modalContent.src}
-                  alt=""
-                  className="max-w-full max-h-[90vh] object-contain"
+               className="max-w-full max-h-[90vh] object-contain"
                 />
               </div>
             )}

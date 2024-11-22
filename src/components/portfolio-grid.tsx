@@ -14,7 +14,17 @@ interface Profile {
   }
 }
 
-const PortfolioGrid = () => {
+interface ContentItem {
+  id: number;
+  type: 'photo' | 'video';
+  thumbnail: string;
+  videoUrl?: string;
+  isPremium: boolean;
+  duration?: string;
+  isTrailer?: boolean;
+}
+
+const PortfolioGrid: React.FC = () => {
   const [playingVideo, setPlayingVideo] = useState<number | null>(null);
   const [isMuted, setIsMuted] = useState(true);
   const [activeTab, setActiveTab] = useState<'all' | 'photos' | 'videos'>('all');
@@ -34,7 +44,7 @@ const PortfolioGrid = () => {
     }           
   };
 
-  const content = [
+  const content: ContentItem[] = [
     // First item - Trailer
     {
       id: 1,
@@ -167,7 +177,6 @@ const PortfolioGrid = () => {
     },
   ];
 
-  // Calculate counts and filtered content
   const contentStats = useMemo(() => {
     const photoCount = content.filter(item => item.type === 'photo').length;
     const videoCount = content.filter(item => item.type === 'video').length;
@@ -179,7 +188,6 @@ const PortfolioGrid = () => {
     };
   }, [content]);
 
-  // Filter content based on active tab
   const filteredContent = useMemo(() => {
     switch (activeTab) {
       case 'photos':
@@ -313,7 +321,7 @@ const PortfolioGrid = () => {
                           loop
                           muted={isMuted}
                           playsInline
-                          onClick={() => openModal('video', item.videoUrl)}
+                          onClick={() => openModal('video', item.videoUrl!)}
                         />
                         {item.isTrailer && (
                           <div className="absolute bottom-2 right-2 flex gap-2">
@@ -427,7 +435,13 @@ const PortfolioGrid = () => {
               />
             ) : (
               <div 
-               className="max-w-full max-h-[90vh] object-contain"
+                className="relative max-w-full max-h-[90vh] w-auto h-auto"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <img
+                  src={modalContent.src}
+                  alt=""
+                  className="max-w-full max-h-[90vh] object-contain"
                 />
               </div>
             )}

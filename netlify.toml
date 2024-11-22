@@ -1,6 +1,7 @@
 [build]
   command = "npm run build"
   publish = ".next"
+  environment = { NODE_VERSION = "18.20.5" }
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
@@ -8,4 +9,4 @@
 [build.environment]
   NEXT_USE_NETLIFY_EDGE = "true"
   NEXT_FORCE_EDGE_IMAGES = "true"
-  NODE_VERSION = "18.20.5"
+  NETLIFY_NEXT_PLUGIN_SKIP = "true"

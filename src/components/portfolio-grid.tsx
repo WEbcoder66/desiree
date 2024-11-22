@@ -2,7 +2,6 @@
 
 import React, { useState, useMemo } from 'react';
 import { Lock, Play, Volume2, VolumeX, X } from 'lucide-react';
-import Image from 'next/image';
 
 interface Profile {
   name: string;
@@ -230,13 +229,10 @@ const PortfolioGrid: React.FC = () => {
       <div className="max-w-4xl mx-auto pt-8 px-4">
         <div className="flex items-center gap-8 mb-6">
           <div className="w-20 h-20 rounded-full overflow-hidden relative">
-            <Image 
+            <img 
               src="/images/profile.jpg"
               alt={profile.name}
-              width={80}
-              height={80}
-              className="object-cover"
-              priority
+              className="w-20 h-20 object-cover rounded-full"
             />
           </div>
           <div className="flex-1">
@@ -343,15 +339,11 @@ const PortfolioGrid: React.FC = () => {
                       </div>
                     ) : (
                       <>
-                        <Image
+                        <img
                           src={item.thumbnail}
                           alt=""
-                          fill
-                          sizes="(max-width: 768px) 33vw,
-                                 (max-width: 1200px) 33vw,
-                                 33vw"
-                          className="object-cover cursor-pointer"
-                          priority={item.id <= 9}
+                          className="absolute inset-0 w-full h-full object-cover cursor-pointer"
+                          loading="lazy"
                           onClick={() => handlePlayClick(item.id)}
                         />
                         <div 
@@ -371,15 +363,13 @@ const PortfolioGrid: React.FC = () => {
                 ) : (
                   // Photo Content
                   <div className="absolute inset-0">
-                    <Image
+                    <img
                       src={item.thumbnail}
                       alt=""
-                      fill
-                      sizes="(max-width: 768px) 33vw,
-                             (max-width: 1200px) 33vw,
-                             33vw"
-                      className={`object-cover ${item.isPremium ? 'blur-xl brightness-50' : 'cursor-pointer'}`}
-                      priority={item.id <= 9}
+                      className={`absolute inset-0 w-full h-full object-cover ${
+                        item.isPremium ? 'blur-xl brightness-50' : 'cursor-pointer'
+                      }`}
+                      loading="lazy"
                       onClick={() => !item.isPremium && openModal('photo', item.thumbnail)}
                     />
                     {item.isPremium && (
